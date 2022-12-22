@@ -1,14 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import Post
 
 
 def index(request):
-    template = 'posts/index.html'
+    posts = Post.objects.order_by('-pub_date')[:10]
     title = '"Это главная страница проекта Yatube"'
     context = {
-        'title': title, 
+        'title':title,
+        'posts': posts, 
     }
-    return render(request, template, context)
+    return render(request, 'posts/index.html', context)
 
 
 def group_list(request, slug):
