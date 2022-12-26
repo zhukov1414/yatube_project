@@ -4,6 +4,12 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+class Group(models.Model):
+    title = models.TextField("Название",max_length=50)
+    slug = models.SlugField("Ссылка",max_length=18)
+    description = models.CharField("Описание", max_length=250)
+    def __str__(self) -> str:
+        return self.title
 
 class Post(models.Model):
     text = models.TextField()
@@ -11,4 +17,6 @@ class Post(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='posts') 
+        related_name='posts')
+    group = models.ForeignKey(Group, blank=True, null=True, related_name='posts', on_delete=models.SET_NULL)
+
